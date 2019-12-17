@@ -1,0 +1,206 @@
+<!-- <div class="col-md-6 col-md-offset-3">
+    <h2>Register</h2>
+    <form name="form" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
+        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !userId.valid }">
+            <label for="firstName">First Name</label>
+            <input type="text" class="form-control" name="firstName" #fname='ngModel' pattern='[a-zA-Z ][a-zA-Z ]*'
+                [(ngModel)]="model.firstName" required />
+
+            <div *ngIf="fname.invalid && (fname.dirty || fname.touched)" class="alert alert-danger">
+
+                <div *ngIf="fname.errors.required">
+                    First Name is required.
+                </div>
+                <div *ngIf="fname.errors.pattern">
+                    Only alphabets and space allowed.
+                </div>
+            </div>
+        </div>
+        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !userId.valid }">
+            <label for="lastName">Last Name</label>
+            <input type="text" class="form-control" name="lastName" #lname='ngModel' pattern='[a-zA-Z ][a-zA-Z ]*'
+                [(ngModel)]="model.lastName" required />
+            <div *ngIf="lname.invalid && (lname.dirty || lname.touched)" class="alert alert-danger">
+
+                <div *ngIf="lname.errors.required">
+                    Last Name is required.
+                </div>
+                <div *ngIf="lname.errors.pattern">
+                    Only alphabets and space allowed.
+                </div>
+            </div>
+        </div>
+        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !userId.valid }">
+            <label for="company">Company Name</label>
+            <input type="text" class="form-control" name="company" pattern='[a-zA-Z ][a-zA-Z ]*' #cname='ngModel'
+                [(ngModel)]="model.company" required />
+            <div *ngIf="cname.invalid && (cname.dirty || cname.touched)" class="alert alert-danger">
+
+                <div *ngIf="cname.errors.required">
+                    Company Name is required.
+                </div>
+                <div *ngIf="cname.errors.pattern">
+                    Only alphabets and space allowed.
+                </div>
+            </div>
+        </div>
+        <div class="form-group" >
+            <label for="email">email ID</label>
+            <input type="email" class="form-control" name="email"  #email='ngModel'
+                [(ngModel)]="model.email" required />
+            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+
+                <div *ngIf="email.errors.required">
+                    Email is required.
+                </div>
+                <div *ngIf="email.errors.pattern">
+                    Enter valid email id.
+                </div> 
+            </div>
+        </div>
+        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !userId.valid }">
+            <label for="userId">userId</label>
+            <input type="text" class="form-control" name="userId" #userid='ngModel' pattern='[a-zA-Z ][a-zA-Z ]*'
+                [(ngModel)]="model.userId" required />
+            <div *ngIf="userid.invalid && (userid.dirty || userid.touched)" class="alert alert-danger">
+
+                <div *ngIf="userid.errors.required">
+                    User ID is required.
+                </div>
+                <div *ngIf="userid.errors.pattern">
+                    Only alphabets and space allowed.
+                </div>
+            </div>
+        </div>
+        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" #password='ngModel' name="password" [pattern]='passwordPattern'
+                [(ngModel)]="model.password" #password="ngModel" required />
+            <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
+
+                <div *ngIf="password.errors.required">
+                    Password is required.
+                </div>
+                <div *ngIf="password.errors.pattern">
+                    Enter valid password.
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-primary">Register</button>
+           
+            <a (click)="f.reset();" class="btn btn-link">clear</a>
+        </div>
+    </form>
+    <div class="s-login-pg-foot">
+        <div *ngIf="errMsg" style="color:indianred; font-weight: bold">{{errMsg}}</div>
+    </div>
+</div> -->
+<div class="col-md-6 col-md-offset-3">
+    <h2>Register</h2>
+    <alert type="warning" *ngIf='showmsg' role="alert" [dismissOnTimeout]=10000>
+        {{errMsg}}.
+    </alert>
+    <form name="form" #f="ngForm" novalidate>
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" class="form-control" name="firstName" maxlength="20" pattern='[a-zA-Z ][a-zA-Z ]*'
+                [(ngModel)]="model.firstName" #fname='ngModel' required />
+            <div *ngIf="fname.invalid && (fname.dirty || fname.touched)" class="alert alert-danger">
+
+                <div *ngIf="fname.errors.required">
+                    First Name is required.
+                </div>
+                <div *ngIf="fname.errors.pattern">
+                    Only alphabets and space allowed.
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" class="form-control" name="lastName" maxlength="20" [(ngModel)]="model.lastName"
+                #lname='ngModel' required pattern='[a-zA-Z ][a-zA-Z ]*' />
+            <!-- <div *ngIf="f.submitted && !lastName.valid" class="help-block">Last Name is required</div> -->
+            <div *ngIf="lname.invalid && (lname.dirty || lname.touched)" class="alert alert-danger">
+
+                <div *ngIf="lname.errors.required">
+                    Last Name is required.
+                </div>
+                <div *ngIf="lname.errors.pattern">
+                    Only alphabets and space allowed.
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="company">Company</label>
+            <input type="text" class="form-control" name="company" maxlength="20" [(ngModel)]="model.company"
+                #cname='ngModel' required pattern='[a-zA-Z ][a-zA-Z ]*' />
+            <div *ngIf="cname.invalid && (cname.dirty || cname.touched)" class="alert alert-danger">
+
+                <div *ngIf="cname.errors.required">
+                    Company Name is required.
+                </div>
+                <div *ngIf="cname.errors.pattern">
+                    Only alphabets and space allowed.
+                </div>
+            </div>
+            <!-- <div *ngIf="f.submitted && !company.valid" class="help-block">Company Name is required</div> -->
+        </div>
+        <div class="form-group">
+            <label for="email">Email ID</label>
+            <input type="text" class="form-control" name="email" maxlength="50" [(ngModel)]="model.email"
+                 #emailId='ngModel' required />
+            <div *ngIf="emailId.invalid && (emailId.dirty || emailId.touched)" class="alert alert-danger">
+
+                <div *ngIf="emailId.errors.required">
+                    Email is required.
+                </div>
+                <div *ngIf="emailId.errors.pattern">
+                    Please enter valid email.
+                </div>
+            </div>
+            <!-- <div *ngIf="f.submitted && !company.valid" class="help-block">Company Name is required</div> -->
+        </div>
+        <div class="form-group">
+            <label for="userId">User Id</label>
+            <input type="text" class="form-control" name="userId" maxlength="50" [(ngModel)]="model.userId"
+                pattern='[a-zA-Z0-9][a-zA-Z0-9@. ]*' #userid='ngModel' required />
+            <div *ngIf="userid.invalid && (userid.dirty || userid.touched)" class="alert alert-danger">
+
+                <div *ngIf="userid.errors.required">
+                   UserID is required.
+                </div>
+                <div *ngIf="userid.errors.pattern">
+                    Please enter valid userID.
+                </div>
+            </div>
+            <!-- <div *ngIf="f.submitted && !company.valid" class="help-block">Company Name is required</div> -->
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" name="password" minlength="8" [(ngModel)]="model.password"
+                [pattern]='passwordPattern' #pass='ngModel' required />
+            <div *ngIf="pass.invalid && (pass.dirty || pass.touched)" class="alert alert-danger">
+
+                <div *ngIf="pass.errors.required">
+                    Password is required.
+                </div>
+                <div *ngIf="pass.errors.pattern">
+                    Please enter valid password.
+                </div>
+                <div *ngIf="pass.errors.minlength">
+                   Minimum 8 characters required.
+                </div>
+            </div>
+            <!-- <div *ngIf="f.submitted && !company.valid" class="help-block">Company Name is required</div> -->
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-primary" [disabled]='f.invalid' (click)='register()'>Register</button>
+    
+            <a (click)="f.reset();" class="btn btn-link">clear</a>
+        </div>
+    </form>
+    
+</div>

@@ -1,0 +1,253 @@
+<alert type="warning" *ngIf='showmsg' role="alert" [dismissOnTimeout]=10000>
+    {{message}}.
+</alert>
+<div class=row>
+    <div class="pad-16">
+        <button type='button' class='btn btn-sm btn-primary' (click)="openModal(template)">Add Customer</button>
+    </div>
+    <div class="pad-16">
+        <button type='button' class='btn btn-sm btn-danger' (click)="openDeleteModal(deletetemplate)">Delete Customer</button>
+    </div>
+</div>
+
+<div class="pad-16">
+
+    <!-- <h3> Lazy Loading Data </h3>
+    <p style="width:1000px"> This is an example of lazy loading data. There are about 100 customer and
+        the page initially loads 10 customer.
+        When you scroll to bottom it loads another 10, till it loads all the 100 customer
+    </p> -->
+    
+    <br />
+    <ngx-datatable style='width:1000px;' [rows]="rows" [columns]="columns" [headerHeight]="45" [rowHeight]="'auto'"
+        [columnMode]="'standard'" [scrollbarV]="false" trackScroll (bottom)='onScroll()'>
+    </ngx-datatable>
+
+    <div *ngIf="isLoading" class="spinner spinner-lg">Loading...</div>
+</div>
+
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add Customer Details</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form name="form" #f="ngForm" novalidate>
+            <!-- <div class="form-group" >
+                <label for="firstName">ID</label>
+                <input type="text" class="form-control" name="id" pattern='[0-9][0-9]*' [(ngModel)]="customer.id" #id='ngModel' maxlength="20" required />
+                <div *ngIf="id.invalid && (id.dirty || id.touched)" class="alert alert-danger">
+
+                    <div *ngIf="id.errors.required">
+                        ID is required.
+                    </div>
+                    <div *ngIf="id.errors.pattern">
+                        Only numbers allowed.
+                    </div>
+                </div>
+               
+            </div> -->
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" name="firstName" maxlength="20" pattern='[a-zA-Z ][a-zA-Z ]*'
+                    [(ngModel)]="customer.firstName" #fname='ngModel' required />
+                <div *ngIf="fname.invalid && (fname.dirty || fname.touched)" class="alert alert-danger">
+
+                    <div *ngIf="fname.errors.required">
+                        First Name is required.
+                    </div>
+                    <div *ngIf="fname.errors.pattern">
+                        Only alphabets and space allowed.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" name="lastName" maxlength="20" [(ngModel)]="customer.lastName" #lname='ngModel'
+                    required pattern='[a-zA-Z ][a-zA-Z ]*'/>
+                <!-- <div *ngIf="f.submitted && !lastName.valid" class="help-block">Last Name is required</div> -->
+                <div *ngIf="lname.invalid && (lname.dirty || lname.touched)" class="alert alert-danger">
+
+                    <div *ngIf="lname.errors.required">
+                        Last Name is required.
+                    </div>
+                    <div *ngIf="lname.errors.pattern">
+                        Only alphabets and space allowed.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="company">Company</label>
+                <input type="text" class="form-control" name="company" maxlength="20" [(ngModel)]="customer.company" #cname='ngModel'
+                    required pattern='[a-zA-Z ][a-zA-Z ]*'/>
+                <div *ngIf="cname.invalid && (cname.dirty || cname.touched)" class="alert alert-danger">
+
+                    <div *ngIf="cname.errors.required">
+                        Company Name is required.
+                    </div>
+                    <div *ngIf="cname.errors.pattern">
+                        Only alphabets and space allowed.
+                    </div>
+                </div>
+                <!-- <div *ngIf="f.submitted && !company.valid" class="help-block">Company Name is required</div> -->
+            </div>
+            <div class="form-group">
+                <label for="company">Email ID</label>
+                <input type="text" class="form-control" name="email" maxlength="50" [(ngModel)]="customer.email" [pattern]='emailpattern' #email='ngModel'
+                    required />
+                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+
+                    <div *ngIf="email.errors.required">
+                        First Name is required.
+                    </div>
+                    <div *ngIf="email.errors.pattern">
+                       Please enter valid email.
+                    </div>
+                </div>
+                <!-- <div *ngIf="f.submitted && !company.valid" class="help-block">Company Name is required</div> -->
+            </div>
+            <div class="form-group">
+                <label for="company">Phone Number</label>
+                <input type="text" class="form-control" name="phone" [(ngModel)]="customer.phone" #phone='ngModel'
+                    required pattern='[0-9+ ][0-9]*' minlength="10" maxlength="15"/>
+                <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="alert alert-danger">
+
+                    <div *ngIf="phone.errors.required">
+                        Phone number is required.
+                    </div>
+                    <div *ngIf="phone.errors.pattern">
+                        Only numbers, + and space allowed.
+                    </div>
+                    <div *ngIf="phone.errors.minlength || phone.errors.maxlength">
+                        Phone number is not valid.
+                    </div>
+                </div>
+                <!-- <div *ngIf="f.submitted && !company.valid" class="help-block">Company Name is required</div> -->
+            </div>
+            <div class="form-group">
+                <label for="company">Address Line 1</label>
+                <input type="text" class="form-control" name="address1" [(ngModel)]="customer.address1" #add1='ngModel'
+                    required [pattern]='addressPattern' maxlength="500"/>
+                <div *ngIf="add1.invalid && (add1.dirty || add1.touched)" class="alert alert-danger">
+
+                    <div *ngIf="add1.errors.required">
+                        Address line 1 is required.
+                    </div>
+                    <div *ngIf="add1.errors.pattern">
+                       Alphanumeric values allowed.
+                    </div>
+
+                </div>
+                <!-- <div *ngIf="f.submitted && !company.valid" class="help-block">Company Name is required</div> -->
+            </div>
+            <div class="form-group">
+                <label for="email">Address Line 2</label>
+                <input type="text" class="form-control" name="address2" [(ngModel)]="customer.address2" #add2='ngModel'
+                    required [pattern]='addressPattern' maxlength="500"/>
+                <div *ngIf="add2.invalid && (add2.dirty || add2.touched)" class="alert alert-danger">
+
+                    <div *ngIf="add2.errors.required">
+                        Address line 2 is required.
+                    </div>
+                    <div *ngIf="add1.errors.pattern">
+                        Alphanumeric values allowed.
+                     </div>
+
+                </div>
+                <!-- <div *ngIf="f.submitted && !email.valid" class="help-block">email Name is required</div> -->
+            </div>
+            <div class="form-group">
+                <label for="email">City</label>
+                <input type="text" class="form-control" name="city" maxlength="20" [(ngModel)]="customer.city" #city='ngModel'
+                    required pattern='[a-zA-Z ][a-zA-Z ]*'/>
+                <div *ngIf="city.invalid && (city.dirty || city.touched)" class="alert alert-danger">
+
+                    <div *ngIf="city.errors.required">
+                        City is required.
+                    </div>
+                    <div *ngIf="city.errors.pattern">
+                        Only alphabets and space allowed.
+                    </div>
+                </div>
+                <!-- <div *ngIf="f.submitted && !email.valid" class="help-block">email Name is required</div> -->
+            </div>
+            <div class="form-group">
+                <label for="email">State</label>
+                <input type="text" class="form-control" name="state" maxlength="20" [(ngModel)]="customer.state" #state='ngModel'
+                    required pattern='[a-zA-Z ][a-zA-Z ]*'/>
+                <div *ngIf="state.invalid && (state.dirty || state.touched)" class="alert alert-danger">
+
+                    <div *ngIf="state.errors.required">
+                        State is required.
+                    </div>
+                    <div *ngIf="state.errors.pattern">
+                        Only alphabets and space allowed.
+                    </div>
+                </div>
+                <!-- <div *ngIf="f.submitted && !email.valid" class="help-block">email Name is required</div> -->
+            </div>
+            <div class="form-group">
+                <label for="email">Country</label>
+                <input type="text" class="form-control" name="country" maxlength="20" [(ngModel)]="customer.country" #con='ngModel'
+                    required pattern='[a-zA-Z ][a-zA-Z ]*'/>
+                <div *ngIf="con.invalid && (con.dirty || con.touched)" class="alert alert-danger">
+
+                    <div *ngIf="con.errors.required">
+                        Country is required.
+                    </div>
+                    <div *ngIf="con.errors.pattern">
+                        Only alphabets and space allowed.
+                    </div>
+                </div>
+                <!-- <div *ngIf="f.submitted && !email.valid" class="help-block">email Name is required</div> -->
+            </div>
+            <div class="form-group">
+                <label for="email">Postal Code</label>
+                <input type="text" class="form-control" name="postalCode" maxlength="10" [(ngModel)]="customer.postalCode"
+                    #code='ngModel' required pattern='[0-9A-Za-z ][0-9A-Za-z ]*'/>
+                <div *ngIf="code.invalid && (code.dirty || code.touched)" class="alert alert-danger">
+                    <div *ngIf="code.errors.required">
+                        Postal code is required.
+                    </div>
+                    <div *ngIf="code.errors.pattern">
+                        Only alphanumeric values and space allowed.
+                    </div>
+                </div>
+                <!-- <div *ngIf="f.submitted && !email.valid" clpostalcodeass="help-block">email Name is required</div> -->
+            </div>
+
+        </form>
+        <button type="button" class="btn btn-primary" (click)="save()" [disabled]='f.invalid'>Save</button>
+    </div>
+</ng-template>
+<ng-template #deletetemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Delete Customer </h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="deletemodalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form name="form" #f="ngForm" novalidate>
+            <div class="form-group">
+                <label for="firstName">Customer ID</label>
+                <input type="text" class="form-control" name="id" maxlength="20" pattern='[0-9][0-9]*'
+                    [(ngModel)]="id" #fname='ngModel' required />
+                <div *ngIf="fname.invalid && (fname.dirty || fname.touched)" class="alert alert-danger">
+
+                    <div *ngIf="fname.errors.required">
+                        Customer ID is required.
+                    </div>
+                    <div *ngIf="fname.errors.pattern">
+                        Only numbers allowed.
+                    </div>
+                </div>
+            </div>
+          
+
+        </form>
+        <button type="button" class="btn btn-primary" (click)="delete()" [disabled]='f.invalid'>Delete</button>
+    </div>
+</ng-template>

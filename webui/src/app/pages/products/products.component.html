@@ -1,0 +1,196 @@
+<alert type="warning" *ngIf='showmsg' role="alert" [dismissOnTimeout]=10000>
+     {{message}}.
+  </alert>
+  <div class=row>
+    <div class="pad-16">
+        <button type='button' class='btn btn-sm btn-primary' (click)="openModal(template)">Add Product</button>
+    </div>
+    <div class="pad-16">
+        <button type='button' class='btn btn-sm btn-danger' (click)="openDeleteModal(deletetemplate)">Delete Product</button>
+    </div>
+</div>
+<!-- <div class="pad-16">
+    <button type='button' class='btn btn-sm btn-primary' (click)="openModal(template)">Add Products</button>
+</div> -->
+<div class="pad-16">
+
+    <ngx-datatable
+        style='width:1000px;'
+        [rows]="rows"
+        [columns]="columns"
+        [headerHeight]="45"
+        [rowHeight]="'auto'"
+        [columnMode]="'standard'"
+        [scrollbarV]="false"
+    >
+    </ngx-datatable>
+</div>
+<ng-template #productDiscontinuedTpl let-row="row" let-value="value">
+   <div class="toggle-switch">
+        <input type="checkbox" [attr.checked]="value==1?true:null" checked [id]="row.productCode"/>
+        <label [for]="row.productCode"></label>
+   </div>
+</ng-template>
+
+<ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Add Product Details</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <form name="form" #f="ngForm" novalidate>
+            <!-- <div class="form-group" >
+                <label for="firstName">ID</label>
+                <input type="text" class="form-control" name="id" pattern='[0-9][0-9]*' [(ngModel)]="product.id" #id='ngModel' maxlength="20" required />
+                <div *ngIf="id.invalid && (id.dirty || id.touched)" class="alert alert-danger">
+
+                    <div *ngIf="id.errors.required">
+                        ID is required.
+                    </div>
+                    <div *ngIf="id.errors.pattern">
+                        Only numbers allowed.
+                    </div>
+                </div>
+            </div> -->
+            <div class="form-group" >
+                <label for="firstName">Category Name</label>
+                <input type="text" class="form-control" name="category" pattern='[a-zA-Z ][a-zA-Z ]*' [(ngModel)]="product.category" #cat='ngModel' maxlength="20" required />
+                <div *ngIf="cat.invalid && (cat.dirty || cat.touched)" class="alert alert-danger">
+
+                    <div *ngIf="cat.errors.required">
+                        Category Name is required.
+                    </div>
+                    <div *ngIf="cat.errors.pattern">
+                        Only alphabets and space allowed.
+                    </div>
+                </div>
+                <!-- <div *ngIf="f.submitted && !firstName.valid" class="help-block">First Name is required</div> -->
+            </div>
+            <div class="form-group" >
+                <label for="email">Standard Cost</label>
+                <input type="text" class="form-control" name="standardCost" pattern='[0-9][0-9. ]*' [(ngModel)]="product.standardCost" #stdcost='ngModel' maxlength="5"  required />
+                <!-- <div *ngIf="f.submitted && !email.valid" class="help-block">email Name is required</div> -->
+                <div *ngIf="stdcost.invalid && (stdcost.dirty || stdcost.touched)" class="alert alert-danger">
+
+                    <div *ngIf="stdcost.errors.required">
+                        Standard cost is required.
+                    </div>
+                    <div *ngIf="stdcost.errors.pattern">
+                        Only numbers and . allowed.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" >
+                <label for="email">Quantity per Unit </label>
+                <input type="text" class="form-control" name="quantityPerUnit" pattern='[0-9][0-9. ]*' [(ngModel)]="product.quantityPerUnit" #quantity='ngModel' maxlength="3" required />
+                <div *ngIf="quantity.invalid && (quantity.dirty || quantity.touched)" class="alert alert-danger">
+
+                    <div *ngIf="quantity.errors.required">
+                       Quantity is required.
+                    </div>
+                    <div *ngIf="quantity.errors.pattern">
+                        Only numbers and . allowed.
+                    </div>
+                </div>
+                <!-- <div *ngIf="f.submitted && !email.valid" class="help-block">email Name is required</div> -->
+            </div>
+            <!-- <div class="form-group" >
+                <label for="email">List Price</label>
+                <input type="text" class="form-control" name="listPrice" [(ngModel)]="product.listPrice"  required />
+                <!-- <div *ngIf="f.submitted && !email.valid" class="help-block">email Name is required</div> 
+            </div> -->
+            <div class="form-group" >
+                <label for="lastName">Description</label>
+                <input type="text" class="form-control" name="description" pattern='[0-9a-zA-Z ][0-9.a-zA-Z.,-\/ ]*' [(ngModel)]="product.description" 
+               #desc='ngModel' maxlength="500" required />
+                <div *ngIf="desc.invalid && (desc.dirty || desc.touched)" class="alert alert-danger">
+
+                    <div *ngIf="desc.errors.required">
+                        Description is required.
+                    </div>
+                    <div *ngIf="desc.errors.pattern">
+                        Only alphanumeric and (.,/\-) allowed.
+                    </div>
+                </div>
+                <!-- <div *ngIf="f.submitted && !lastName.valid" class="help-block">Last Name is required</div> -->
+            </div>
+            <div class="form-group" >
+                <label for="company">Product Name</label>
+                <input type="text" class="form-control" name="productName" pattern='[a-zA-Z0-9 ][0-9a-zA-Z-. ]*' [(ngModel)]="product.productName" #prodname='ngModel' maxlength="30" required />
+                <!-- <div *ngIf="f.submitted && !company.valid" class="help-block">Company Name is required</div> -->
+                <div *ngIf="prodname.invalid && (prodname.dirty || prodname.touched)" class="alert alert-danger">
+
+                    <div *ngIf="prodname.errors.required">
+                        Product Name is required.
+                    </div>
+                    <div *ngIf="prodname.errors.pattern">
+                        Only alphabets and space allowed.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" >
+                <label for="email">Product Code</label>
+                <input type="text" class="form-control" name="productCode" pattern='[a-zA-Z0-9 ][0-9a-zA-Z-. ]*' [(ngModel)]="product.productCode" #code='ngModel' maxlength="10" required />
+                <div *ngIf="code.invalid && (prodncodeame.dirty || code.touched)" class="alert alert-danger">
+
+                    <div *ngIf="code.errors.required">
+                        Product code is required.
+                    </div>
+                    <div *ngIf="code.errors.pattern">
+                        Only alphabets and space allowed.
+                    </div>
+                </div>
+                <!-- <div *ngIf="f.submitted && !email.valid" class="help-block">email Name is required</div> -->
+            </div>
+            <div class="form-group" >
+                <label for="email">Minimum Order Quantity</label>
+                <input type="text" class="form-control" name="minimumReorderQuantity" pattern='[0-9 ][0-9 ]*' #order='ngModel' maxlength="5" [(ngModel)]="product.minimumReorderQuantity" required />
+                <!-- <div *ngIf="f.submitted && !email.valid" class="help-block">email Name is required</div> -->
+                <div *ngIf="order.invalid && (order.dirty || order.touched)" class="alert alert-danger">
+
+                    <div *ngIf="order.errors.required">
+                        Minimum order is required.
+                    </div>
+                    <div *ngIf="order.errors.pattern">
+                        Only alphabets and space allowed.
+                    </div>
+                </div>
+            </div>
+        </form>
+       <button type="button" class="btn btn-primary" [disabled]='f.invalid' (click)="save()" >Save</button>
+    </div>
+  </ng-template>
+
+  <ng-template #deletetemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Delete Product </h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="deletemodalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form name="form" #f="ngForm" novalidate>
+            <div class="form-group">
+                <label for="firstName">Product ID</label>
+                <input type="text" class="form-control" name="id" maxlength="20" pattern='[0-9][0-9]*'
+                    [(ngModel)]="id" #fname='ngModel' required />
+                <div *ngIf="fname.invalid && (fname.dirty || fname.touched)" class="alert alert-danger">
+
+                    <div *ngIf="fname.errors.required">
+                        Customer ID is required.
+                    </div>
+                    <div *ngIf="fname.errors.pattern">
+                        Only numbers allowed.
+                    </div>
+                </div>
+            </div>
+          
+
+        </form>
+        <button type="button" class="btn btn-primary" (click)="delete()" [disabled]='f.invalid'>Delete</button>
+    </div>
+</ng-template>
+
+

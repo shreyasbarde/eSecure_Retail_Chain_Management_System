@@ -1,0 +1,32 @@
+<div class="s-login-pg">
+    <div class="s-login-pg-head">
+        <div style="width:100px;"><s-logo></s-logo></div>
+        <p style="text-align: center;font-style: italic;font-weight: bold;font-size: larger;color: black;"> E-Secure Retail Chain Management System </p>
+    </div>
+    <form class="s-login-pg-form" name="form" (ngSubmit)="login()" #f="ngForm" novalidate>
+        <input type="text"     placeholder="Username (demo)" name="username" [(ngModel)]="model.username" #username="ngModel" required/>
+        <input type="password" placeholder="Password (demo)" name="password" [(ngModel)]="model.password" #password="ngModel" required/>
+        <!-- <div>
+          <img id="captchaId" style="border-radius: 7px;" [src]='captchaDomain.captchaImage' />
+          <img src="../../../assets/images/CaptchaRefresh.PNG" (click)="loadCaptcha()" style="cursor: pointer;width: 25px" class="m-t-10 m-l-10"
+          />
+        </div>
+        <br/>
+        <div>
+          <input autocomplete="off" style="height: 60%;" id="inputCaptchaId" name="captchaInput" [(ngModel)]="model.captchaInput" #captchaInput="ngModel" type="text" required class="form-control textInputcls"
+            placeholder="CAPTCHA">
+        </div>
+        <br/>
+        <div *ngIf="!isValidCaptchaInput">
+          <p class="text-danger">
+            {{erroMessageCaptcha}}
+          </p>
+        </div> -->
+        <button type="submit" class="btn btn-primary">LOG IN</button>
+        <!-- <button type="submit"  [routerLink]="'/signup'" class="btn btn-primary" >Register</button> -->
+    </form>
+    <div class="s-login-pg-foot">
+        <div *ngIf="errMsg" style="color:indianred; font-weight: bold">{{errMsg}}</div>
+    </div>
+    
+</div>
